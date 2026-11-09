@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>تجربة عمل تفاعلية في الأحياء | فحص النسيج الوعائي</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&family=Reem+Kufi:wght@500;700&display=swap');
+:root{--bg:#f0f3e9;--paper:#fffefa;--ink:#1d2d22;--muted:#637267;--green:#456b36;--green2:#71934b;--lime:#e6edb7;--line:#d5dfca;--red:#b6384a;--blue:#2876b9;--gold:#c18a28;--shadow:0 10px 30px #283b2410}
+*{box-sizing:border-box;scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Tajawal',sans-serif;line-height:1.75}
+header{padding:34px 18px 38px;text-align:center;color:white;background:radial-gradient(circle at 15% 10%,#9bb46c55,transparent 30%),linear-gradient(120deg,#263f2d,#58783d 65%,#87994b)}
+header .eyebrow{display:inline-block;border:1px solid #ffffff75;border-radius:30px;padding:4px 14px;font-size:14px}
+h1{font-family:'Reem Kufi','Tajawal',sans-serif;font-size:clamp(27px,5vw,43px);line-height:1.35;margin:12px 0 8px}
+header p{margin:0;color:#edf3e6;font-size:17px}
+nav{position:sticky;top:0;z-index:5;background:#fffefaed;backdrop-filter:blur(10px);border-bottom:1px solid var(--line);display:flex;gap:8px;justify-content:center;flex-wrap:wrap;padding:9px 12px}
+nav a{color:#3f5f34;text-decoration:none;font-weight:700;font-size:14px;padding:5px 10px;border-radius:20px}
+nav a:hover{background:var(--lime)}
+main{max-width:1120px;margin:24px auto;padding:0 16px 42px}
+section{scroll-margin-top:75px;margin-bottom:19px}
+.panel{background:var(--paper);border:1px solid var(--line);border-radius:19px;padding:clamp(16px,3vw,24px);box-shadow:var(--shadow)}
+h2{font-size:23px;color:#405f32;margin:0 0 13px}
+h3{font-size:18px;color:#405f32;margin:0 0 8px}
+p{margin:7px 0}
+.muted{color:var(--muted);font-size:14px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.pill{display:inline-block;background:#eef3df;color:#42602f;border-radius:30px;padding:3px 11px;font-size:13px;font-weight:700}
+.tools{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.tool{background:#f6f8ef;border:1px solid var(--line);border-radius:13px;padding:12px;text-align:center}
+.tool .emoji{font-size:27px;display:block}
+.step{background:#f7f8f1;border:1px solid var(--line);border-radius:13px;padding:13px}
+.step b{color:#496d36}
+.scene{background:linear-gradient(#eaf4e8,#f8f6e9);border-radius:15px;overflow:hidden;padding:8px}
+.scene svg{width:100%;height:auto;display:block;max-height:340px}
+.controls{display:grid;gap:12px;margin-top:13px}
+label{font-weight:700;display:block;margin-bottom:4px}
+select,input[type=range]{width:100%}
+select{font:inherit;padding:9px 12px;border:1px solid var(--line);border-radius:10px;background:white}
+input[type=range]{accent-color:var(--green)}
+button{font:inherit;font-weight:700;border:0;border-radius:11px;padding:10px 15px;background:var(--green);color:white;cursor:pointer}
+button:hover{filter:brightness(1.08)}
+button.secondary{background:#e9efdd;color:#35502c}
+button:focus-visible,a:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid #a8bd62;outline-offset:2px}
+.actions{display:flex;gap:9px;flex-wrap:wrap}
+.status{background:#f0f5e7;border-radius:12px;padding:11px 14px}
+.status strong{font-size:23px;color:#456b36}
+.cross-layout{display:grid;grid-template-columns:minmax(210px,270px) 1fr;align-items:center;gap:18px}
+.cross-svg{width:100%;max-width:270px;display:block;margin:auto}
+.cross-svg .hotspot{cursor:pointer;transition:filter .2s}
+.cross-svg .hotspot:hover{filter:brightness(1.15);stroke:#253b23;stroke-width:4}
+.legend{display:grid;gap:9px}
+.legend button{background:#f0f4e8;color:#2c422a;text-align:right;border:1px solid var(--line)}
+.legend button.active{background:#dfe9c8;border-color:#7d9c4e}
+.info-card{background:#f7f8f1;border:1px solid var(--line);border-radius:12px;padding:12px;min-height:86px}
+.timeline{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}
+.timepoint{border:1px solid var(--line);background:#f7f8f1;border-radius:12px;padding:10px;text-align:center;cursor:pointer;color:var(--ink)}
+.timepoint.active{background:#e8efcf;border-color:#819d4d}
+.compare{width:100%;border-collapse:collapse;font-size:15px}
+.compare th,.compare td{border:1px solid var(--line);padding:10px;text-align:right;vertical-align:top}
+.compare th{background:#edf2df;color:#3f5d31}
+.path{display:flex;align-items:center;justify-content:space-between;gap:7px;flex-wrap:wrap;background:#f4f7ed;border-radius:13px;padding:15px}
+.path span{background:#fff;border:1px solid var(--line);border-radius:10px;padding:8px 12px;font-weight:700}
+.path b{color:#789344}
+.fact{background:#f5f7e9;border-right:4px solid #9baa51;padding:12px 14px;border-radius:9px}
+.quiz-q{border:1px solid var(--line);border-radius:13px;padding:14px;margin:10px 0;background:#fbfcf7}
+.quiz-q label{font-weight:500;display:flex;align-items:center;gap:8px;margin:7px 0;cursor:pointer}
+.quiz-q input{accent-color:var(--green)}
+.feedback{font-weight:700;margin-top:7px;min-height:24px}
+footer{background:#263f2d;color:white;text-align:center;padding:25px 16px;border-radius:18px}
+footer h2{color:#edf4d9}
+.names{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:13px 0}
+.names span{background:#ffffff18;border:1px solid #ffffff50;padding:6px 13px;border-radius:30px}
+a.ref{color:#456b36;overflow-wrap:anywhere}
+@media(max-width:760px){.grid2{grid-template-columns:1fr}.grid3{grid-template-columns:1fr}.tools{grid-template-columns:repeat(2,1fr)}.cross-layout{grid-template-columns:1fr}.timeline{grid-template-columns:repeat(2,1fr)}nav{justify-content:flex-start;overflow-x:auto;flex-wrap:nowrap}nav a{white-space:nowrap}}
+</style>
+</head>
+<body>
+<header>
+ <span class="eyebrow">مشروع أحياء تفاعلي</span>
+ <h1>تجربة عمل تفاعلية في الأحياء<br>فحص النسيج الوعائي</h1>
+ <p>كيف ينتقل الماء داخل النبات؟ اكتشفي ذلك من خلال تجربة الكرفس والماء الملوّن.</p>
+</header>
+<nav aria-label="التنقل بين أقسام الموقع">
+ <a href="#steps">خطوات العمل</a><a href="#simulation">المحاكاة</a><a href="#stem">ماذا نرى في الساق؟</a><a href="#science">التفسير العلمي</a><a href="#quiz">اختبري فهمك</a><a href="#references">المراجع</a>
+</nav>
+<main>
+<section id="steps" class="panel">
+ <span class="pill">القسم الأول</span><h2>١. خطوات العمل</h2>
+ <h3>الأدوات المطلوبة</h3>
+ <div class="tools">
+  <div class="tool"><span class="emoji">🌿</span><b>أعواد كرفس</b><div class="muted">أو زهرة قرنفل بيضاء</div></div>
+  <div class="tool"><span class="emoji">💧</span><b>ماء</b><div class="muted">كمية مناسبة في الوعاء</div></div>
+  <div class="tool"><span class="emoji">🎨</span><b>صبغة طعام غامقة</b><div class="muted">لتتبّع حركة الماء</div></div>
+  <div class="tool"><span class="emoji">🥛</span><b>وعاء شفاف</b><div class="muted">لملاحظة الماء والساق</div></div>
+ </div>
+ <h3 style="margin-top:18px">طريقة تنفيذ التجربة</h3>
+ <div class="grid3">
+  <div class="step"><b>الخطوة ١</b><p class="muted">املئي الوعاء بالماء، ثم أضيفي إليه بضع قطرات من صبغة الطعام وامزجيهما.</p></div>
+  <div class="step"><b>الخطوة ٢</b><p class="muted">ضعي قاعدة ساق الكرفس أو ساق زهرة القرنفل في الوعاء بحيث تلامس الماء الملوّن.</p></div>
+  <div class="step"><b>الخطوة ٣</b><p class="muted">اتركي النبات ٢٠ دقيقة أو أكثر، ثم افحصي الساق ولاحظي الخطوط التي اكتسبت اللون. قد يحتاج اللون الواضح إلى وقت أطول.</p></div>
+ </div>
+ <p class="fact muted" style="margin-top:13px"><b>تنبيه للتجربة الفعلية:</b> استخدمي أدوات نظيفة، ويفضّل أن يشرف المعلم/ـة على قص قاعدة الساق إذا لزم ذلك.</p>
+</section>
+
+<section id="simulation" class="panel">
+ <span class="pill">القسم الثاني</span><h2>٢. المحاكاة التفاعلية</h2>
+ <p class="muted">غيّري لون الصبغة وحرّكي شريط الزمن لمشاهدة تمثيل مبسّط لانتقال الماء الملوّن داخل الساق.</p>
+ <div class="grid2">
+  <div class="scene">
+   <svg viewBox="0 0 520 330" role="img" aria-label="رسم توضيحي لساق كرفس في كأس ماء ملوّن">
+    <defs><linearGradient id="glass"><stop stop-color="#fff" stop-opacity=".8"/><stop offset="1" stop-color="#a9d0c4" stop-opacity=".45"/></linearGradient><linearGradient id="stem"><stop stop-color="#8ebf70"/><stop offset=".5" stop-color="#c2e19b"/><stop offset="1" stop-color="#6c9e53"/></linearGradient></defs>
+    <path d="M258 103 Q191 28 145 54 Q159 112 235 119 Q183 132 185 163 Q240 161 260 119 Q284 165 345 146 Q329 105 277 105 Q327 68 305 29 Q267 45 258 103" fill="#45974d" stroke="#2d743b" stroke-width="3"/>
+    <path d="M259 116 Q253 65 292 44 M255 122 Q218 79 174 64 M259 127 Q219 140 198 151" fill="none" stroke="#b9dfa0" stroke-width="3"/>
+    <path d="M237 112 Q222 183 230 253 L294 253 Q291 179 273 111 Q255 132 237 112" fill="url(#stem)" stroke="#578c49" stroke-width="4"/>
+    <path id="stainA" d="M245 127 Q237 184 244 253 L254 253 Q251 182 258 122Z" fill="#b6384a" opacity=".08"/>
+    <path id="stainB" d="M265 124 Q276 182 279 253 L287 253 Q280 172 273 120Z" fill="#b6384a" opacity=".08"/>
+    <path d="M178 205 L343 205 L326 294 Q260 307 194 294Z" fill="url(#glass)" stroke="#72988e" stroke-width="4"/>
+    <path id="water" d="M184 237 L337 237 L326 292 Q260 305 194 292Z" fill="#b6384a" opacity=".9"/>
+    <path d="M178 205 L343 205" stroke="#72988e" stroke-width="5"/>
+    <path d="M205 249 Q260 258 315 249" fill="none" stroke="#fff" stroke-opacity=".4" stroke-width="3"/>
+   </svg>
+  </div>
+  <div class="controls">
+   <div><label for="dye">لون الصبغة</label><select id="dye"><option value="#b6384a">أحمر</option><option value="#2876b9">أزرق</option><option value="#7546a8">بنفسجي</option><option value="#d18a18">برتقالي</option></select></div>
+   <div><label for="minutes">الزمن الافتراضي: <span id="minutesText">٠</span> دقيقة</label><input id="minutes" type="range" min="0" max="60" step="5" value="0"></div>
+   <div class="actions"><button id="play">ابدئي المحاكاة</button><button class="secondary" id="reset">إعادة الضبط</button></div>
+   <div class="status"><strong id="percent">٠٪</strong><div id="simulationStatus" class="muted">لم يبدأ التمثيل بعد.</div></div>
+   <p class="muted">هذه حركة مرئية تعليمية مصطنعة، وليست قياسًا فعليًا لسرعة انتقال الماء في ساق حقيقية.</p>
+  </div>
+ </div>
+ <h3 style="margin-top:19px">مراحل الملاحظة الافتراضية</h3>
+ <div class="timeline">
+  <button class="timepoint active" data-time="0">البداية<br><small>٠ دقيقة</small></button>
+  <button class="timepoint" data-time="20">بداية الملاحظة<br><small>٢٠ دقيقة</small></button>
+  <button class="timepoint" data-time="40">تزايد اللون<br><small>٤٠ دقيقة</small></button>
+  <button class="timepoint" data-time="60">مرحلة متقدمة<br><small>٦٠ دقيقة</small></button>
+ </div>
+</section>
+
+<section id="stem" class="panel">
+ <span class="pill">القسم الثالث</span><h2>٣. ماذا نرى في الساق؟</h2>
+ <p class="muted">اختاري جزءًا من الرسم أو من الأزرار لمعرفة اسمه ووظيفته. الرسم تخطيطي للتعرّف على مكوّنات الحزمة الوعائية، وليس صورة مجهرية حقيقية.</p>
+ <div class="cross-layout">
+  <svg class="cross-svg" viewBox="0 0 260 260" role="img" aria-label="مقطع عرضي تخطيطي لساق نبات">
+   <circle cx="130" cy="130" r="119" fill="#d9e8bf" stroke="#72975a" stroke-width="5"/>
+   <circle cx="130" cy="130" r="96" fill="#f2e7c9" stroke="#b9a56c" stroke-width="3"/>
+   <g fill="#e7b9a3" stroke="#94654e" stroke-width="2">
+    <g transform="translate(130 35)"><ellipse class="hotspot" data-part="bundle" rx="13" ry="22"/><circle class="hotspot" data-part="xylem" cy="8" r="7" fill="#b6384a"/><circle class="hotspot" data-part="phloem" cy="-9" r="6" fill="#e6a94b"/></g>
+    <g transform="translate(197 62) rotate(35)"><ellipse class="hotspot" data-part="bundle" rx="13" ry="22"/><circle class="hotspot" data-part="xylem" cy="8" r="7" fill="#b6384a"/><circle class="hotspot" data-part="phloem" cy="-9" r="6" fill="#e6a94b"/></g>
+    <g transform="translate(224 130) rotate(90)"><ellipse class="hotspot" data-part="bundle" rx="13" ry="22"/><circle class="hotspot" data-part="xylem" cy="8" r="7" fill="#b6384a"/><circle class="hotspot" data-part="phloem" cy="-9" r="6" fill="#e6a94b"/></g>
+    <g transform="translate(195 198) rotate(145)"><ellipse class="hotspot" data-part="bundle" rx="13" ry="22"/><circle class="hotspot" data-part="xylem" cy="8" r="7" fill="#b6384a"/><circle class="hotspot" data-part="phloem" cy="-9" r="6" fill="#e6a94b"/></g>
+    <g transform="translate(130 225) rotate(180)"><ellipse class="hotspot" data-part="bundle" rx="13" ry="22"/><circle class="hotspot" data-part="xylem" cy="8" r="7" fill="#b6384a"/><circle class="hotspot" data-part="phloem" cy="-9" r="6" fill="#e6a94b"/></g>
+    <g transform="translate(63 198) rotate(215)"><ellipse class="hotspot" data-part="bundle" rx="13" ry="22"/><circle class="hotspot" data-part="xylem" cy="8" r="7" fill="#b6384a"/><circle class="hotspot" data-part="phloem" cy="-9" r="6" fill="#e6a94b"/></g>
+    <g transform="translate(36 130) rotate(270)"><ellipse class="hotspot" data-part="bundle" rx="13" ry="22"/><circle class="hotspot" data-part="xylem" cy="8" r="7" fill="#b6384a"/><circle class="hotspot" data-part="phloem" cy="-9" r="6" fill="#e6a94b"/></g>
+    <g transform="translate(63 62) rotate(325)"><ellipse class="hotspot" data-part="bundle" rx="13" ry="22"/><circle class="hotspot" data-part="xylem" cy="8" r="7" fill="#b6384a"/><circle class="hotspot" data-part="phloem" cy="-9" r="6" fill="#e6a94b"/></g>
+   </g>
+   <circle class="hotspot" data-part="ground" cx="130" cy="130" r="38" fill="#e8d9aa" stroke="#c6b77e" stroke-width="2"/>
+  </svg>
+  <div class="legend">
+   <button class="active" data-show="xylem">🔴 أوعية الخشب</button>
+   <button data-show="phloem">🟠 اللحاء</button>
+   <button data-show="bundle">🟤 الحزمة الوعائية</button>
+   <button data-show="ground">🟢 الأنسجة المحيطة</button>
+   <div class="info-card" id="partInfo"><b>أوعية الخشب</b><p class="muted">تنقل الماء والأملاح المعدنية من الجذور إلى الأجزاء العليا من النبات. تصعد الصبغة معها في هذه التجربة.</p></div>
+  </div>
+ </div>
+ <p class="fact muted" style="margin-top:14px"><b>الملاحظة المتوقعة:</b> قد تظهر خطوط أو نقاط ملوّنة في الساق، وعند فحص مقطعها يمكن تتبّع مواضع الأوعية التي وصل إليها الماء الملوّن.</p>
+</section>
+
+<section id="science" class="panel">
+ <span class="pill">القسم الرابع</span><h2>٤. التفسير العلمي</h2>
+ <p>تحتوي النباتات الوعائية على نسيجين ناقلين رئيسيين: الخشب واللحاء. عند وضع قاعدة الساق في الماء الملوّن، يدخل الماء إلى الساق وينتقل إلى أعلى عبر أوعية الخشب، فتتحرك الصبغة الذائبة معه وتظهر مسارات ملوّنة يمكن ملاحظتها.</p>
+ <h3 style="margin-top:17px">مقارنة بين الخشب واللحاء</h3>
+ <table class="compare">
+  <thead><tr><th>وجه المقارنة</th><th>الخشب (Xylem)</th><th>اللحاء (Phloem)</th></tr></thead>
+  <tbody>
+   <tr><th>الوظيفة</th><td>نقل الماء والأملاح المعدنية.</td><td>نقل السكريات والمواد العضوية الناتجة عن البناء الضوئي إلى أجزاء النبات المستهلكة أو المخزِّنة.</td></tr>
+   <tr><th>اتجاه النقل</th><td>غالبًا من الجذور إلى أعلى النبات.</td><td>من مصادر إنتاج أو تحرير السكريات إلى مناطق استخدامها أو تخزينها؛ وقد يختلف الاتجاه بين الأنابيب الغربالية.</td></tr>
+   <tr><th>في هذه التجربة</th><td>هو المسار الأساسي الذي تنتقل فيه الصبغة مع الماء.</td><td>ليس المسار الذي تفسّره هذه التجربة لانتقال الماء الملوّن.</td></tr>
+  </tbody>
+ </table>
+ <h3 style="margin-top:18px">مسار الماء داخل النبات</h3>
+ <div class="path"><span>الجذور</span><b>←</b><span>أوعية الخشب في الساق</span><b>←</b><span>الأوراق</span></div>
+ <p class="fact muted" style="margin-top:14px"><b>الاستنتاج:</b> ظهور الصبغة داخل مسارات الساق يدعم أن الماء ينتقل عبر النسيج الوعائي، وبشكل أساسي عبر أوعية الخشب. ولا تعني التجربة أن اللحاء ينقل الماء الملوّن.</p>
+</section>
+
+<section class="panel">
+ <span class="pill">معلومة إثرائية</span><h2>٥. هل تعلمين؟</h2>
+ <div class="grid3">
+  <div class="step"><h3>🌱 النتح</h3><p class="muted">فقد الماء من أجزاء النبات الهوائية، خاصة الأوراق، يساهم في سحب الماء إلى أعلى عبر الخشب.</p></div>
+  <div class="step"><h3>🧪 الشعيرات والأوعية</h3><p class="muted">يتكون نسيج الخشب من خلايا متخصصة تساعد على نقل الماء وتوفر دعمًا للنبات.</p></div>
+  <div class="step"><h3>🍃 اللحاء</h3><p class="muted">ينقل نواتج البناء الضوئي من الأجزاء المنتجة إلى الأجزاء التي تحتاجها أو تخزنها.</p></div>
+ </div>
+</section>
+
+<section id="quiz" class="panel">
+ <span class="pill">نشاط تقويمي</span><h2>٦. اختبري فهمك</h2>
+ <p class="muted">اختاري إجابة لكل سؤال، ثم اضغطي «تحقّق من إجاباتي».</p>
+ <div class="quiz-q"><b>١. ما النسيج المسؤول أساسًا عن نقل الماء الملوّن في التجربة؟</b>
+  <label><input type="radio" name="q1" value="a"> اللحاء</label><label><input type="radio" name="q1" value="b"> الخشب</label><label><input type="radio" name="q1" value="c"> البشرة</label><div class="feedback" id="f1"></div></div>
+ <div class="quiz-q"><b>٢. لماذا نضيف صبغة إلى الماء؟</b>
+  <label><input type="radio" name="q2" value="a"> لتغذية النبات</label><label><input type="radio" name="q2" value="b"> لتغيير لون الأوراق دائمًا</label><label><input type="radio" name="q2" value="c"> لتتبّع مسار الماء داخل النبات</label><div class="feedback" id="f2"></div></div>
+ <div class="quiz-q"><b>٣. ما المادة التي ينقلها اللحاء بصورة أساسية؟</b>
+  <label><input type="radio" name="q3" value="a"> السكريات والمواد العضوية</label><label><input type="radio" name="q3" value="b"> الماء فقط</label><label><input type="radio" name="q3" value="c"> الأكسجين من التربة</label><div class="feedback" id="f3"></div></div>
+ <div class="quiz-q"><b>٤. أي عبارة أدق عن الزمن في المحاكاة؟</b>
+  <label><input type="radio" name="q4" value="a"> يطابق دائمًا الزمن الحقيقي في النبات</label><label><input type="radio" name="q4" value="b"> هو تمثيل توضيحي وليس قياسًا فعليًا</label><label><input type="radio" name="q4" value="c"> يثبت سرعة النقل لكل النباتات</label><div class="feedback" id="f4"></div></div>
+ <button id="checkQuiz">تحقّق من إجاباتي</button> <button class="secondary" id="clearQuiz">إعادة الاختبار</button>
+ <div id="score" class="status" style="margin-top:12px" aria-live="polite">لم تُصحّح الإجابات بعد.</div>
+</section>
+
+<section id="references" class="panel">
+ <span class="pill">للاطلاع العلمي</span><h2>٧. المراجع العلمية</h2>
+ <ol>
+  <li><b>OpenStax Biology 2e.</b> Plant Form and Physiology — شرح الأنسجة النباتية والنقل في النباتات. <a class="ref" href="https://openstax.org/books/biology-2e/pages/30-introduction" target="_blank" rel="noopener">قراءة المرجع</a></li>
+  <li><b>OpenStax Biology 2e.</b> Transport of Water and Solutes in Plants — آليات انتقال الماء والمواد المذابة. <a class="ref" href="https://openstax.org/books/biology-2e/pages/30-5-transport-of-water-and-solutes-in-plants" target="_blank" rel="noopener">قراءة المرجع</a></li>
+  <li><b>Encyclopaedia Britannica.</b> Xylem and Phloem — تعريف النسيجين الوعائيين ووظائفهما. <a class="ref" href="https://www.britannica.com/science/xylem" target="_blank" rel="noopener">قراءة مرجع الخشب</a></li>
+ </ol>
+ <p class="muted">المراجع للتفسير العلمي العام، أما ألوان الرسم ومراحل المحاكاة فهي عناصر تعليمية توضيحية وليست بيانات منشورة أو نتائج تجربة فعلية.</p>
+</section>
+
+<footer>
+ <h2>إعداد الطالبات</h2>
+ <div class="names"><span>مودة الحبشي</span><span>رودين راضي</span><span>ندى باجابر</span><span>لانا الحارثي</span><span>وسن الحربي</span></div>
+ <p>تجربة عمل تفاعلية في الأحياء — فحص النسيج الوعائي</p>
+</footer>
+</main>
+<script>
+const $=id=>document.getElementById(id);
+const time=$('minutes'), dye=$('dye');
+const arabicDigits=n=>String(n).replace(/\d/g,d=>'٠١٢٣٤٥٦٧٨٩'[+d]);
+let interval=null;
+function setTime(t){
+ time.value=t;
+ const p=Math.round(t/60*100),c=dye.value,opacity=t===0?.07:.12+(t/60)*.78;
+ $('minutesText').textContent=arabicDigits(t);
+ $('percent').textContent=arabicDigits(p)+'٪';
+ $('stainA').setAttribute('fill',c);$('stainB').setAttribute('fill',c);$('water').setAttribute('fill',c);
+ $('stainA').setAttribute('opacity',opacity);$('stainB').setAttribute('opacity',opacity*.9);
+ $('simulationStatus').textContent=t===0?'لم يبدأ التمثيل بعد.':t<20?'تمثيل بداية انتقال الماء الملوّن داخل الساق.':t<40?'تظهر المسارات الملونة بصورة أوضح في هذا التمثيل.':'تمثيل لمرحلة متقدمة من انتقال الصبغة.';
+ document.querySelectorAll('.timepoint').forEach(b=>b.classList.toggle('active',+b.dataset.time===t));
+}
+time.addEventListener('input',()=>setTime(+time.value));
+dye.addEventListener('change',()=>setTime(+time.value));
+$('play').addEventListener('click',()=>{
+ if(interval){clearInterval(interval);interval=null;}
+ if(+time.value>=60)setTime(0);
+ interval=setInterval(()=>{let t=+time.value;if(t>=60){clearInterval(interval);interval=null;return;}setTime(Math.min(60,t+5));},650);
+});
+$('reset').addEventListener('click',()=>{if(interval)clearInterval(interval);interval=null;setTime(0);});
+document.querySelectorAll('.timepoint').forEach(b=>b.addEventListener('click',()=>{if(interval)clearInterval(interval);interval=null;setTime(+b.dataset.time);}));
+const partText={
+ xylem:['أوعية الخشب','تنقل الماء والأملاح المعدنية من الجذور إلى الأجزاء العليا من النبات. تصعد الصبغة مع الماء في هذه التجربة.'],
+ phloem:['اللحاء','ينقل السكريات والمواد العضوية من مصادر إنتاجها أو تحريرها إلى الأجزاء التي تستخدمها أو تخزنها.'],
+ bundle:['الحزمة الوعائية','تضم أنسجة النقل، ومنها الخشب واللحاء، وتظهر موزعة في مقطع الساق وفق نوع النبات والجزء المفحوص.'],
+ ground:['الأنسجة المحيطة','أنسجة تملأ أجزاء من الساق وتشارك في وظائف مثل التخزين والدعم، بحسب نوع النسيج وموقعه.']
+};
+function showPart(k){
+ const v=partText[k];$('partInfo').innerHTML='<b>'+v[0]+'</b><p class="muted">'+v[1]+'</p>';
+ document.querySelectorAll('[data-show]').forEach(b=>b.classList.toggle('active',b.dataset.show===k));
+}
+document.querySelectorAll('[data-show]').forEach(b=>b.addEventListener('click',()=>showPart(b.dataset.show)));
+document.querySelectorAll('.hotspot').forEach(el=>el.addEventListener('click',()=>showPart(el.dataset.part)));
+const answers={q1:'b',q2:'c',q3:'a',q4:'b'};
+const explanations={
+ q1:'صحيح: الخشب هو المسار الأساسي لانتقال الماء في التجربة.',
+ q2:'صحيح: الصبغة تساعدنا على رؤية مسار الماء.',
+ q3:'صحيح: اللحاء ينقل السكريات والمواد العضوية.',
+ q4:'صحيح: الزمن هنا افتراضي لتوضيح الفكرة فقط.'
+};
+$('checkQuiz').addEventListener('click',()=>{
+ let score=0;
+ Object.entries(answers).forEach(([q,a],i)=>{
+  const chosen=document.querySelector('input[name="'+q+'"]:checked'),f=$('f'+(i+1));
+  if(!chosen){f.textContent='اختاري إجابة لهذا السؤال.';f.style.color='#9a641b';}
+  else if(chosen.value===a){score++;f.textContent=explanations[q];f.style.color='#3f7138';}
+  else{f.textContent='ليست الإجابة الصحيحة. راجعي التفسير العلمي وحاولي مرة أخرى.';f.style.color='#ad3948';}
+ });
+ $('score').textContent='نتيجتك: '+arabicDigits(score)+' من ٤';
+});
+$('clearQuiz').addEventListener('click',()=>{
+ document.querySelectorAll('input[type=radio]').forEach(i=>i.checked=false);
+ for(let i=1;i<=4;i++){$('f'+i).textContent='';}
+ $('score').textContent='لم تُصحّح الإجابات بعد.';
+});
+setTime(0);
+</script>
+</body>
+</html>
